@@ -1,0 +1,439 @@
+// ==========================================================================
+// Header Styles (style.scss - Keep Filename)
+// ==========================================================================
+
+// --- Variables & Mixins ---
+// IMPORTANT: Ideally, move these to a central/global SCSS file (_variables.scss, _mixins.scss)
+// If you already have global files, use those variables instead.
+// These are based on your Auth.scss for consistency.
+
+// Colors (Combine theme-independent SCSS vars and theme-dependent CSS vars)
+$primary-color: #4f46e5; // Indigo primary color
+$primary-hover: #4338ca;
+$text-light: #f8fafc;    // Light text (e.g., on primary buttons)
+
+// Referencing CSS variables set by your ThemeContext
+$background-body: var(--bg, #f1f5f9);         // Fallback to light gray
+$background-light: var(--bg-light, #ffffff); // Fallback to white (Navbar background)
+$background-soft: var(--bg-soft, #f1f5f9);    // Fallback to light gray (Input backgrounds)
+$text-primary: var(--textColor, #1e293b);     // Fallback to dark text
+$text-secondary: var(--text-secondary, #64748b); // Fallback to gray text
+$border-color: var(--border-color, #e2e8f0);   // Fallback to light border
+
+// Spacing
+$spacing-xs: 0.25rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+
+// Radii
+$radius-sm: 0.25rem;
+$radius-md: 0.375rem;
+$radius-lg: 0.5rem;
+$radius-full: 9999px; // Pill shape / Circular
+
+// Shadows
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+// Transitions
+$transition-fast: all 0.15s ease-in-out;
+$transition-normal: all 0.3s ease;
+
+// Z-Index
+$z-index-sticky: 1020; // Navbar z-index
+$z-index-dropdown: 1000; // Mobile menu/search z-index
+
+// Navbar Specific
+$navbar-height: 64px; // Modern standard height
+
+// Mixins (Keep your existing 'md' mixin or use this)
+@mixin md {
+  @media (min-width: 768px) { @content; }
+}
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin button-reset { // Basic reset for button styling
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: inherit;
+}
+
+@mixin focus-ring { // Consistent focus outline
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+    border-radius: $radius-sm; // Optional: match element radius
+  }
+}
+// --- End Variables & Mixins ---
+
+
+// --- Base Header Style ---
+.header {
+  background-color: $background-light; // Use variable referencing CSS var
+  height: $navbar-height;
+  padding: 0 $spacing-lg; // Horizontal padding
+  border-bottom: 1px solid $border-color;
+  box-shadow: $shadow-sm;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: $z-index-sticky;
+  transition: background-color $transition-normal, border-color $transition-normal; // Smooth theme change
+
+  &__container {
+    height: 100%;
+    max-width: 1280px; // Common max width for content
+    margin: 0 auto;
+    @include flex-between;
+    gap: $spacing-md;
+  }
+
+  // --- Brand ---
+  &__brand {
+    display: inline-flex; // Use inline-flex to wrap content tightly
+    align-items: center;
+    gap: $spacing-sm;
+    cursor: pointer;
+    text-decoration: none;
+    padding: $spacing-sm 0; // Vertical padding for click area
+    @include focus-ring; // Add focus style for accessibility
+    border-radius: $radius-sm; // For focus outline shape
+    -webkit-tap-highlight-color: transparent; // Remove tap highlight on mobile
+  }
+
+  &__brand-icon {
+    font-size: 2rem; // Slightly larger icon
+    color: $primary-color;
+    flex-shrink: 0; // Prevent icon from shrinking
+  }
+
+  &__brand-name {
+    font-size: 1.6rem; // Slightly larger name
+    font-weight: 700;
+    color: $text-primary; // Use variable referencing CSS var
+    letter-spacing: -0.025em;
+    white-space: nowrap; // Prevent wrapping
+    span { // Style for the 'i' or accent part
+      color: $primary-color;
+      // Potentially different font or style here if desired
+    }
+    // Hide text on very small screens if space is tight
+    @media (max-width: 360px) {
+       // display: none; // Example: Hide text on very small screens
+    }
+  }
+
+  // --- Desktop Actions (Search + Menu Items) ---
+  &__desktop-actions {
+    display: none; // Hidden on mobile by default
+    flex-grow: 1; // Allow it to take space
+    justify-content: flex-end; // Align content (search, icons) to the right
+    align-items: center;
+    gap: $spacing-lg; // Gap between search and menu items
+
+    @include md { // Show on medium screens and up (matches your old breakpoint)
+      display: flex;
+    }
+  }
+
+  // --- Desktop Search ---
+  &__search {
+    position: relative; // For positioning the icon button absolutely
+    display: flex; // Use flex to manage input and button potential
+    align-items: center;
+    max-width: 320px; // Limit width
+    width: 100%; // Flexible width within its container
+
+    // Search Icon Button (Visually appears before input via absolute positioning)
+    .header__search-button {
+        @include button-reset; // Reset button styles
+        position: absolute;
+        left: 0; // Position icon at the start
+        top: 50%;
+        transform: translateY(-50%);
+        height: 100%; // Match input height
+        padding: 0 $spacing-md; // Clickable area
+        color: $text-secondary;
+        display: flex;
+        align-items: center;
+        font-size: 1.4rem; // Icon size
+        transition: color $transition-fast;
+        z-index: 1; // Ensure icon is clickable above input padding
+
+        &:hover {
+            color: $primary-color;
+        }
+        @include focus-ring; // Add focus style
+        border-radius: $radius-full 0 0 $radius-full; // Match input radius edge
+    }
+
+    .header__search-input {
+      width: 100%;
+      height: 42px; // Slightly taller input
+      // Adjust left padding to make space for the absolute positioned button
+      padding: $spacing-sm $spacing-md $spacing-sm 3rem;
+      border: 1px solid $border-color;
+      border-radius: $radius-full; // Pill shape
+      background-color: $background-soft;
+      color: $text-primary;
+      font-size: 0.9rem;
+      transition: $transition-normal;
+      outline: none;
+
+      &::placeholder { // Modern placeholder style
+        color: $text-secondary;
+        opacity: 0.8;
+      }
+
+      &:focus {
+        border-color: $primary-color;
+        background-color: $background-light; // White background on focus
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.15); // Soft focus glow
+        // If icon button is inside, adjust its color on focus too
+        // ~ .header__search-button { color: $primary-color; } // If button came after input in HTML
+      }
+       // Adjust icon color when input is focused (since button is positioned over it)
+       &:focus + .header__search-button, // If button is after input
+       &:focus ~ .header__search-button { // General sibling combinator (safer)
+          color: $primary-color;
+      }
+    }
+  }
+
+
+  // --- Desktop Menu Items ---
+  &__menu-items {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs; // Smaller gap for icon-only buttons
+  }
+
+  &__item {
+    @include button-reset; // Reset base styles (works for both Link and button)
+    @include flex-center;
+    padding: $spacing-sm + $spacing-xs; // Make slightly larger click target (10px)
+    border-radius: $radius-full; // Circular hover/focus effect
+    color: $text-secondary;
+    font-size: 1.5rem; // Icon size
+    transition: background-color $transition-fast, color $transition-fast;
+    text-decoration: none; // Ensure Links don't have underlines
+    position: relative; // For potential tooltips or badges later
+
+    &:hover {
+      color: $primary-color;
+      background-color: rgba($primary-color, 0.08); // Subtle background
+    }
+
+    @include focus-ring; // Apply focus style mixin
+
+    // Active link styling (requires NavLink from react-router-dom and className="active")
+    &.active { // If using NavLink and it adds 'active' class
+       color: $primary-color;
+       background-color: rgba($primary-color, 0.1);
+    }
+
+    // Labels (Optional, hidden by default on desktop)
+    .header__item-label {
+        display: none; // Hide labels on desktop for icon-only look
+    }
+  }
+
+
+  // --- Mobile Controls (Search Icon & Hamburger) ---
+  &__mobile-controls {
+    display: flex; // Displayed on mobile
+    align-items: center;
+    gap: $spacing-xs; // Small gap between controls
+
+    @include md { // Hide on medium screens and up
+      display: none;
+    }
+  }
+
+  &__icon-button { // Style for mobile toggle buttons
+    @include button-reset;
+    @include flex-center;
+    padding: $spacing-sm + $spacing-xs; // 10px padding
+    border-radius: $radius-full; // Circular
+    color: $text-primary; // Use primary text color for mobile controls
+    font-size: 1.6rem; // Slightly larger icons for mobile touch
+    transition: background-color $transition-fast, color $transition-fast;
+
+    &:hover {
+      color: $primary-color;
+      background-color: rgba($primary-color, 0.08);
+    }
+     @include focus-ring; // Apply focus style mixin
+  }
+
+
+  // --- Mobile Search Area (Appears below header) ---
+  &__mobile-search {
+    // This container appears ONLY when 'search' state is true in React
+    position: absolute; // Position relative to the main header
+    top: $navbar-height; // Start right below the header
+    left: 0;
+    width: 100%;
+    background-color: $background-soft; // Use soft background
+    padding: $spacing-sm $spacing-lg; // Padding around the input wrapper
+    border-bottom: 1px solid $border-color;
+    z-index: $z-index-dropdown; // Ensure it's above content but below header if needed
+    // Animation
+    animation: slideDownFadeIn 0.3s ease-out forwards;
+
+    @include md { // Hide on desktop
+        display: none;
+    }
+  }
+
+  // Wrapper inside mobile search for alignment
+  &__mobile-search-wrapper {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+  }
+
+  &__mobile-search-input {
+    flex-grow: 1; // Take available space
+    height: 44px; // Mobile-friendly height
+    border: 1px solid $border-color;
+    border-radius: $radius-md; // Standard radius
+    padding: $spacing-sm $spacing-md;
+    background-color: $background-light; // White background
+    color: $text-primary;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color $transition-fast, box-shadow $transition-fast;
+
+     &::placeholder {
+        color: $text-secondary;
+        opacity: 0.8;
+      }
+
+    &:focus {
+      border-color: $primary-color;
+      box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+    }
+  }
+
+  &__mobile-search-button {
+     @include button-reset;
+     @include flex-center;
+     flex-shrink: 0; // Prevent button from shrinking
+     width: 44px; // Square button
+     height: 44px;
+     border-radius: $radius-md;
+     background-color: $primary-color;
+     color: $text-light;
+     font-size: 1.5rem;
+     transition: background-color $transition-fast;
+
+     &:hover {
+        background-color: $primary-hover;
+     }
+      @include focus-ring; // Apply focus style mixin (outline will be on primary color)
+      outline-color: $primary-hover; // Darker focus ring on colored button
+  }
+
+
+  // --- Mobile Menu Dropdown (Appears below header) ---
+  &__mobile-menu {
+    // This container appears ONLY when 'menu' state is true in React
+    position: absolute;
+    top: $navbar-height; // Start below header
+    left: 0;
+    width: 100%;
+    background-color: $background-light; // Match header background
+    border-bottom: 1px solid $border-color;
+    box-shadow: $shadow-md; // Add shadow for depth
+    padding: $spacing-sm 0; // Vertical padding for the list
+    display: flex;
+    flex-direction: column;
+    z-index: $z-index-dropdown;
+    // Animation
+    animation: slideDownFadeIn 0.3s ease-out forwards;
+
+    @include md { // Hide on desktop
+      display: none;
+    }
+  }
+
+  &__mobile-menu-item {
+    @include button-reset; // Reset base styles (works for Link and button)
+    display: flex;
+    align-items: center;
+    gap: $spacing-md; // Gap between icon and text
+    padding: $spacing-md $spacing-lg; // Generous padding for touch targets
+    color: $text-primary;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    width: 100%; // Make items full width
+    text-align: left;
+    transition: background-color $transition-fast, color $transition-fast;
+
+    svg {
+      font-size: 1.4rem; // Icon size
+      color: $text-secondary; // Use secondary color for icons
+      margin-right: $spacing-xs; // Add consistent spacing if gap isn't enough
+      flex-shrink: 0;
+    }
+
+    &:hover {
+      background-color: rgba($primary-color, 0.08);
+      color: $primary-color;
+      svg {
+        color: $primary-color; // Highlight icon on hover too
+      }
+    }
+     @include focus-ring; // Apply focus style mixin
+     border-radius: 0; // Menu items shouldn't have radius typically for focus
+  }
+
+} // End .header
+
+
+// --- Spacer Element ---
+// Adjusts height dynamically based on mobile search visibility
+.header-spacer {
+  height: $navbar-height; // Default height matching the header
+  transition: height 0.3s ease-out; // Smooth height transition if search opens/closes
+
+  // If the header has the mobile search open class, increase spacer height
+  .header--mobile-search-open + & {
+    // Calculate height: navbar height + approximate mobile search bar height (incl. padding)
+    height: calc(#{$navbar-height} + 44px + #{$spacing-sm} * 2); // Navbar + input height + vertical padding
+  }
+}
+
+// --- Animation Keyframes ---
+@keyframes slideDownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px); // Start slightly above
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

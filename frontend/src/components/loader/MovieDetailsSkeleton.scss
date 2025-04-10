@@ -1,0 +1,118 @@
+// src/components/loader/MovieDetailsSkeleton.scss
+
+// Define skeleton variables directly (or use global ones)
+$skeleton-bg: #e0e0e0;
+$skeleton-highlight: #f5f5f9; // Slightly different highlight for potentially different bg
+$skeleton-card-bg: var(--bg-light, #ffffff); // Match info background
+$skeleton-container-bg: var(--softBg, #f1f5f9); // Match page background
+$skeleton-radius-lg: 0.5rem;
+$skeleton-radius-sm: 0.25rem;
+
+@keyframes skeleton-shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+@mixin skeleton-animated-bg($color: $skeleton-bg, $highlight: $skeleton-highlight) {
+  background-color: $color;
+  background-image: linear-gradient(to right, $color 0%, $highlight 20%, $color 40%, $color 100%);
+  background-repeat: no-repeat;
+  background-size: 2000px 100%;
+  animation: skeleton-shimmer 1.5s linear infinite;
+  color: transparent;
+}
+
+// Main skeleton container matches page padding etc.
+.movie-details-skeleton {
+  width: 100%;
+  background-color: $skeleton-container-bg; // Match page background
+}
+
+// Optional backdrop skeleton
+.details-backdrop-skeleton {
+  // @include skeleton-animated-bg(#ccc, #e0e0e0); // Darker backdrop skeleton
+  // height: 30vh; // Example height
+  // width: 100%;
+  // margin-bottom: -50px; // Overlap example
+}
+
+.details-content-skeleton {
+  width: 100%;
+  background-color: $skeleton-card-bg; // Match card background
+  padding: 2rem 0; // Vertical padding
+
+  &__container {
+    max-width: 1000px; // Match content max-width
+    margin: 0 auto;
+    padding: 0 1.5rem; // Horizontal padding
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+      gap: 2rem;
+      padding: 0 2rem;
+    }
+  }
+
+  &__poster {
+    @include skeleton-animated-bg;
+    width: 200px; // Match poster width
+    max-width: 100%; // Ensure it shrinks on mobile
+    aspect-ratio: 2 / 3;
+    border-radius: $skeleton-radius-lg;
+    margin: 0 auto; // Center on mobile
+    flex-shrink: 0;
+
+    @media (min-width: 768px) {
+      width: 250px; // Slightly larger on desktop
+      margin: 0;
+    }
+     @media (min-width: 1024px) {
+       width: 300px;
+     }
+  }
+
+  &__info {
+    flex-grow: 1;
+  }
+
+  // Common style for skeleton lines
+  &__line {
+    @include skeleton-animated-bg;
+    border-radius: $skeleton-radius-sm;
+    margin-bottom: 0.75rem;
+    height: 1em;
+
+    &--title {
+      height: 1.8em;
+      width: 70%;
+      margin-bottom: 1rem;
+    }
+    &--genres {
+        height: 1.2em;
+        width: 50%;
+        margin-bottom: 1.5rem;
+    }
+    &--heading {
+        height: 1.1em;
+        width: 30%;
+        margin-bottom: 0.5rem;
+    }
+     &--short {
+        width: 60%;
+        margin-bottom: 1.5rem; // Space before meta
+     }
+     &--meta {
+         height: 1em;
+         width: 80%;
+         margin-bottom: 2rem; // Space before button
+     }
+     &--button {
+         height: 45px; // Match button height
+         width: 150px; // Match button width
+         border-radius: $skeleton-radius-lg;
+     }
+  }
+}

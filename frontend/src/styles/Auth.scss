@@ -1,0 +1,605 @@
+// AuthNew.scss - Modern Authentication Styling
+
+// Variables
+$primary-color: #4f46e5; // Indigo primary color
+$primary-hover: #4338ca;
+$secondary-color: #f43f5e; // Rose accent color
+$text-primary: #1e293b; // Slate 800
+$text-secondary: #64748b; // Slate 500
+$text-light: #f8fafc; // Slate 50
+$background-light: #ffffff;
+$background-gray: #f1f5f9; // Slate 100
+$border-color: #e2e8f0; // Slate 200
+$error-color: #ef4444; // Red 500
+$success-color: #10b981; // Emerald 500
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$radius-sm: 0.25rem;
+$radius-md: 0.375rem;
+$radius-lg: 0.5rem;
+$radius-xl: 1rem;
+$transition-normal: all 0.3s ease;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin input-placeholder {
+  &::placeholder {
+    color: $text-secondary;
+    opacity: 0.7;
+  }
+}
+
+@mixin button-base {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: $transition-normal;
+  border-radius: $radius-md;
+  padding: 0.75rem 1.5rem;
+  
+  &:focus {
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.4);
+    outline: none;
+  }
+  
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+// Keyframes for animations
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+// Base styles
+.auth-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: $background-light;
+  position: relative;
+  overflow: hidden;
+  
+  .auth-card-wrapper {
+    width: 100%;
+    max-width: 480px;
+    padding: 2rem;
+    z-index: 2;
+    @include flex-center;
+    
+    @media (max-width: 768px) {
+      max-width: 100%;
+    }
+  }
+  
+  .auth-card {
+    width: 100%;
+    padding: 2.5rem;
+    background-color: $background-light;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-lg;
+    @include flex-column;
+    gap: 1.5rem;
+    animation: fadeIn 0.5s ease-out, slideUp 0.5s ease-out;
+    
+    @media (max-width: 640px) {
+      padding: 2rem 1.5rem;
+      box-shadow: none;
+    }
+  }
+  
+  .auth-backdrop {
+    flex: 1;
+    background: linear-gradient(135deg, $primary-color, $secondary-color);
+    @include flex-center;
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+      opacity: 0.4;
+    }
+    
+    .backdrop-content {
+      color: $text-light;
+      text-align: center;
+      max-width: 70%;
+      padding: 2rem;
+      z-index: 1;
+      
+      h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+      }
+      
+      p {
+        font-size: 1.125rem;
+        opacity: 0.9;
+        line-height: 1.6;
+      }
+    }
+    
+    @media (max-width: 1024px) {
+      display: none;
+    }
+  }
+  
+  // Admin specific backdrop styling
+  .admin-backdrop {
+    background: linear-gradient(135deg, #1e40af, #3b0764);
+    
+    &::before {
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+    }
+  }
+}
+
+// Brand Elements
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+  
+  .brand-icon {
+    font-size: 2rem;
+    color: $primary-color;
+  }
+  
+  .brand-name {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: $text-primary;
+    
+    span {
+      color: $primary-color;
+    }
+    
+    .admin-badge {
+      font-size: 0.75rem;
+      background-color: $secondary-color;
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: $radius-sm;
+      vertical-align: middle;
+      margin-left: 0.5rem;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+  }
+}
+
+// Auth Title Section
+.auth-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: $text-primary;
+  margin: 0;
+}
+
+.auth-subtitle {
+  color: $text-secondary;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+}
+
+// Form elements
+.auth-form {
+  @include flex-column;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.form-group {
+  @include flex-column;
+  gap: 0.5rem;
+  width: 100%;
+  
+  label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $text-primary;
+  }
+  
+  .label-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    .forgot-password {
+      font-size: 0.75rem;
+      color: $primary-color;
+      text-decoration: none;
+      font-weight: 500;
+      
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  
+  .input-group {
+    position: relative;
+    width: 100%;
+    
+    .input-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: $text-secondary;
+      font-size: 1.25rem;
+    }
+    
+    input {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 2.75rem;
+      border: 1px solid $border-color;
+      border-radius: $radius-md;
+      font-size: 1rem;
+      transition: $transition-normal;
+      background-color: $background-light;
+      color: $text-primary;
+      @include input-placeholder;
+      
+      &:focus {
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+        outline: none;
+      }
+      
+      &.error {
+        border-color: $error-color;
+      }
+    }
+    
+    .toggle-password {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      padding: 0;
+      color: $text-secondary;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      &:hover {
+        color: $text-primary;
+      }
+    }
+  }
+}
+
+// Submit Button
+.submit-button {
+  @include button-base;
+  background-color: $primary-color;
+  color: white;
+  font-size: 1rem;
+  width: 100%;
+  margin-top: 0.5rem;
+  height: 3rem;
+  
+  &:hover {
+    background-color: $primary-hover;
+  }
+  
+  &.loading {
+    position: relative;
+    color: transparent;
+    
+    &::after {
+      content: "";
+      position: absolute;
+      width: 1.25rem;
+      height: 1.25rem;
+      top: 50%;
+      left: 50%;
+      margin-top: -0.625rem;
+      margin-left: -0.625rem;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      animation: spin 0.8s linear infinite;
+    }
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// Footer section
+.auth-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  
+  p {
+    color: $text-secondary;
+    font-size: 0.875rem;
+    margin: 0;
+  }
+  
+  .register-link {
+    color: $primary-color;
+    font-weight: 500;
+    text-decoration: none;
+    font-size: 0.875rem;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// Add responsive design for smaller screens
+@media (max-width: 640px) {
+  .auth-container {
+    flex-direction: column;
+    
+    .auth-card-wrapper {
+      padding: 1rem;
+    }
+    
+    .auth-card {
+      border-radius: 0;
+    }
+  }
+  
+  .auth-title {
+    font-size: 1.5rem;
+  }
+  
+  .brand .brand-name {
+    font-size: 1.5rem;
+  }
+}
+
+// Animation for form validation (continued)
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+.input-error {
+  animation: shake 0.5s;
+  
+  input {
+    border-color: $error-color;
+  }
+  
+  .error-message {
+    color: $error-color;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+  }
+}
+
+// Checkbox styling for "Show Password"
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  
+  input[type="checkbox"] {
+    appearance: none;
+    width: 1rem;
+    height: 1rem;
+    border: 1px solid $border-color;
+    border-radius: $radius-sm;
+    background-color: $background-light;
+    cursor: pointer;
+    position: relative;
+    
+    &:checked {
+      background-color: $primary-color;
+      border-color: $primary-color;
+      
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0.2rem;
+        left: 0.35rem;
+        width: 0.25rem;
+        height: 0.5rem;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
+    }
+    
+    &:focus {
+      box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+      outline: none;
+    }
+  }
+  
+  label {
+    font-size: 0.875rem;
+    color: $text-secondary;
+    cursor: pointer;
+  }
+}
+
+// Social login buttons (for future implementation)
+.social-login {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 1rem;
+  
+  .divider {
+    display: flex;
+    align-items: center;
+    color: $text-secondary;
+    font-size: 0.875rem;
+    margin: 0.5rem 0;
+    
+    &::before, &::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background-color: $border-color;
+    }
+    
+    &::before {
+      margin-right: 1rem;
+    }
+    
+    &::after {
+      margin-left: 1rem;
+    }
+  }
+  
+  .social-button {
+    @include button-base;
+    background-color: $background-gray;
+    color: $text-primary;
+    border: 1px solid $border-color;
+    padding: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    
+    &:hover {
+      background-color: darken($background-gray, 3%);
+    }
+    
+    .icon {
+      font-size: 1.25rem;
+    }
+  }
+}
+
+// Custom toast notification styling (overrides react-toastify defaults)
+.Toastify__toast {
+  border-radius: $radius-md !important;
+  box-shadow: $shadow-md !important;
+  
+  &-body {
+    font-family: inherit !important;
+    padding: 0.75rem !important;
+  }
+  
+  &--success {
+    background-color: rgba($success-color, 0.95) !important;
+  }
+  
+  &--error {
+    background-color: rgba($error-color, 0.95) !important;
+  }
+  
+  &--info {
+    background-color: rgba($primary-color, 0.95) !important;
+  }
+}
+
+// Dark mode styles (future implementation)
+body.dark-mode {
+  .auth-container {
+    background-color: #121212;
+    
+    .auth-card {
+      background-color: #1e1e1e;
+      box-shadow: $shadow-lg;
+    }
+    
+    .auth-title, .brand-name {
+      color: #f8fafc;
+    }
+    
+    .auth-subtitle, .auth-footer p {
+      color: #94a3b8;
+    }
+    
+    .form-group label {
+      color: #e2e8f0;
+    }
+    
+    .input-group input {
+      background-color: #2d2d2d;
+      border-color: #3f3f3f;
+      color: #f8fafc;
+      
+      &::placeholder {
+        color: #94a3b8;
+      }
+      
+      &:focus {
+        border-color: $primary-color;
+      }
+    }
+    
+    .toggle-password {
+      color: #94a3b8;
+      
+      &:hover {
+        color: #e2e8f0;
+      }
+    }
+    
+    .checkbox-container label {
+      color: #94a3b8;
+    }
+    
+    .social-button {
+      background-color: #2d2d2d;
+      border-color: #3f3f3f;
+      color: #e2e8f0;
+      
+      &:hover {
+        background-color: #383838;
+      }
+    }
+    
+    .divider {
+      color: #94a3b8;
+      
+      &::before, &::after {
+        background-color: #3f3f3f;
+      }
+    }
+  }
+}

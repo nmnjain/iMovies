@@ -1,0 +1,66 @@
+// src/components/loader/BookingCardSkeleton.scss
+
+// Variables (use global if available)
+$skeleton-bg: #e0e0e0;
+$skeleton-highlight: #f5f5f9;
+$skeleton-card-bg: var(--bg-light, #ffffff); // Match card background
+$skeleton-radius-lg: 0.5rem;
+$skeleton-radius-md: 0.375rem;
+$skeleton-radius-sm: 0.25rem;
+
+@keyframes skeleton-shimmer { /* ... Same as previous skeletons ... */
+  0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; }
+}
+@mixin skeleton-animated-bg($color: $skeleton-bg, $highlight: $skeleton-highlight) { /* ... Same as previous skeletons ... */
+  background-color: $color; background-image: linear-gradient(to right, $color 0%, $highlight 20%, $color 40%, $color 100%);
+  background-repeat: no-repeat; background-size: 2000px 100%; animation: skeleton-shimmer 1.5s linear infinite; color: transparent;
+}
+
+.booking-card-skeleton {
+  background-color: $skeleton-card-bg;
+  border-radius: $skeleton-radius-lg;
+  padding: 1rem; // Match card padding
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column; // Stack on mobile
+  gap: 1rem;
+
+  @media (min-width: 768px) { // Side-by-side on desktop
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  &__poster {
+    @include skeleton-animated-bg;
+    width: 120px; // Smaller poster for booking card
+    aspect-ratio: 2 / 3;
+    border-radius: $skeleton-radius-md;
+    margin: 0 auto; // Center on mobile
+    flex-shrink: 0;
+
+    @media (min-width: 768px) {
+      width: 150px;
+      margin: 0;
+    }
+  }
+
+  &__details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem; // Gap between lines
+  }
+
+  &__line {
+    @include skeleton-animated-bg;
+    border-radius: $skeleton-radius-sm;
+    height: 1em; // Base height
+
+    &--title { height: 1.5em; width: 70%; }
+    &--short { width: 50%; }
+    &--medium { width: 80%; }
+    &--tickets { height: 2.5em; width: 90%; } // Placeholder for multiple seat lines
+    &--price { width: 40%; margin-top: 0.5rem; }
+    &--button { height: 36px; width: 100px; border-radius: $skeleton-radius-md; margin-top: auto; align-self: flex-end; }
+  }
+}

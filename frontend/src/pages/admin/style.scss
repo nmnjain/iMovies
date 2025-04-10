@@ -1,0 +1,210 @@
+// ==========================================================================
+// Admin Dashboard Page Styles (style.scss - Keep Filename)
+// ==========================================================================
+
+// --- Variables (INCLUDE ALL NEEDED VARS) ---
+$primary-color: #4f46e5;
+$primary-hover: #4338ca;
+$secondary-color: #f43f5e;
+$error-color: #ef4444; // Red for delete button etc.
+$error-hover: #dc2626; // Darker red
+$text-light: #f8fafc;
+$background-body: var(--softBg, #f1f5f9);
+$background-light: var(--bg-light, #ffffff);
+$text-primary: var(--textColor, #1e293b);
+$text-secondary: var(--text-secondary, #64748b);
+$border-color: var(--border-color, #e2e8f0);
+
+// Spacing
+$spacing-xs: 0.25rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+$spacing-xxl: 3rem;
+
+// Radii
+$radius-sm: 0.25rem;
+$radius-md: 0.375rem;
+$radius-lg: 0.5rem;
+$radius-full: 9999px;
+
+// Navbar Height
+$navbar-height: 64px; // Assuming modern AdminNavbar height
+
+// Shadows (INCLUDE THESE)
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+// Transitions
+$transition-fast: all 0.15s ease-in-out;
+$transition-normal: all 0.3s ease;
+// --- End Variables ---
+
+
+// --- Base Page Style ---
+.admin-page {
+  background-color: $background-body;
+  color: $text-primary;
+  min-height: calc(100vh - #{$navbar-height});
+  padding-top: $navbar-height;
+  padding-bottom: $spacing-xxl; // Padding before footer (if used)
+
+  .contentWrapper {
+    flex-grow: 1;
+    padding: $spacing-xl $spacing-lg; // Padding inside wrapper
+    width: 100%;
+    max-width: 1200px; // Allow wide view for admin tables/grids
+    margin: 0 auto;
+  }
+}
+
+// --- Page Title ---
+.admin-page__title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: $text-primary;
+  text-align: center;
+  margin-bottom: $spacing-xl;
+
+  span {
+    color: $primary-color; // Highlight part of title
+  }
+
+  @media (min-width: 768px) {
+    font-size: 2.2rem;
+    margin-bottom: $spacing-xxl;
+    text-align: left; // Align left on larger screens
+  }
+}
+
+// --- Admin Shows Grid ---
+.admin-shows-grid {
+  display: grid;
+  // Responsive grid layout
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); // Adjust minmax as needed
+  gap: $spacing-lg;
+
+  @media (min-width: 1024px) {
+     gap: $spacing-xl;
+  }
+}
+
+
+// --- Individual Show Card (Admin) ---
+.admin-show-card {
+  background-color: $background-light;
+  border-radius: $radius-md; // Slightly smaller radius maybe
+  padding: $spacing-md;
+  box-shadow: $shadow-sm;
+  border: 1px solid $border-color;
+  display: flex;
+  justify-content: space-between; // Push button to the end
+  align-items: flex-start; // Align content top / button top
+  gap: $spacing-md;
+  transition: box-shadow $transition-fast;
+
+  &:hover {
+     box-shadow: $shadow-md;
+  }
+
+  &__details {
+    flex-grow: 1; // Allow details to take space
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm; // Gap between detail items
+    overflow: hidden; // Prevent long text overflow issues
+  }
+
+  &__title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: $text-primary;
+    margin: 0;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; // Ellipsis for long movie names
+  }
+
+  &__info-item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    font-size: 0.85rem;
+    color: $text-secondary; // Use secondary color for details
+
+    svg { // Icon style
+      font-size: 1.1rem;
+      color: $primary-color;
+      flex-shrink: 0;
+    }
+    span { // Text part
+      color: $text-primary; // Main text color for values
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &__actions {
+    flex-shrink: 0; // Prevent button container shrinking
+  }
+
+  .delete-button {
+    @extend %button-reset; // Use placeholder reset from AdminNavbar styles (or define locally)
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px; // Square button
+    height: 36px;
+    border-radius: $radius-md;
+    color: $error-color; // Error color for delete
+    font-size: 1.4rem; // Icon size
+    background-color: transparent; // Transparent bg default
+    transition: background-color $transition-fast, color $transition-fast, transform $transition-fast;
+
+    &:hover {
+      background-color: rgba($error-color, 0.1); // Subtle red background on hover
+      color: darken($error-color, 10%); // Darken icon slightly
+       transform: scale(1.1); // Slight scale effect
+    }
+     &:focus-visible {
+       outline: 2px solid $error-color; // Red outline on focus
+       outline-offset: 1px;
+       background-color: rgba($error-color, 0.1);
+     }
+  }
+} // End .admin-show-card
+
+
+// --- Message States & Loader ---
+.admin-page__loader { /* Reuse loading style from other pages */
+    display: flex; justify-content: center; align-items: center;
+    flex-grow: 1; padding: $spacing-xxl 0; min-height: 300px;
+}
+
+.admin-page__message { /* Reuse message style from other pages */
+  flex-grow: 1; display: flex; flex-direction: column; justify-content: center;
+  align-items: center; text-align: center; color: $text-secondary;
+  padding: $spacing-xxl $spacing-md; min-height: 300px;
+  svg { font-size: 3.5rem; margin-bottom: $spacing-md; opacity: 0.6; }
+  h3 { font-size: 1.4rem; color: $text-primary; margin-bottom: $spacing-sm; font-weight: 600; }
+  p { font-size: 1rem; line-height: 1.6; max-width: 450px; margin-bottom: $spacing-lg; }
+  &--empty svg { color: $text-secondary; }
+  &--error svg, &--error h3 { color: $error-color; }
+  .empty-state__button { // Button style within messages
+     background-color: $primary-color; color: $text-light; border: none; padding: 0.6rem 1.5rem;
+     border-radius: $radius-md; cursor: pointer; font-weight: 500; transition: background-color $transition-fast; text-decoration: none;
+     &:hover { background-color: $primary-hover; }
+     &:focus-visible { outline: 2px solid $primary-color; outline-offset: 2px; }
+  }
+}
+
+// --- Button Reset Placeholder (if not using @extend from global file) ---
+%button-reset {
+  background: none; border: none; padding: 0; margin: 0;
+  font: inherit; color: inherit; cursor: pointer; text-align: inherit;
+  -webkit-tap-highlight-color: transparent;
+}

@@ -1,0 +1,228 @@
+// ==========================================================================
+// Add Show Page Styles (style.scss - Keep Filename)
+// ==========================================================================
+
+// --- Variables (Ensure ALL are defined) ---
+$primary-color: #4f46e5;
+$primary-hover: #4338ca;
+$secondary-color: #f43f5e;
+$text-light: #f8fafc;
+$background-body: var(--softBg, #f1f5f9);
+$background-light: var(--bg-light, #ffffff);
+$text-primary: var(--textColor, #1e293b);
+$text-secondary: var(--text-secondary, #64748b);
+$border-color: var(--border-color, #e2e8f0);
+$error-color: #ef4444;
+$success-color: #10b981;
+
+// Spacing
+$spacing-xs: 0.25rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+$spacing-xxl: 3rem;
+
+// Radii
+$radius-sm: 0.25rem;
+$radius-md: 0.375rem;
+$radius-lg: 0.5rem;
+$radius-full: 9999px;
+
+// Navbar Height
+$navbar-height: 64px; // Assuming modern AdminNavbar height
+
+// Shadows
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+// Transitions
+$transition-fast: all 0.15s ease-in-out;
+$transition-normal: all 0.3s ease;
+// --- End Variables ---
+
+
+// --- Base Page Style ---
+.add-show-page {
+  background-color: $background-body;
+  color: $text-primary;
+  min-height: calc(100vh - #{$navbar-height});
+  padding-top: $navbar-height;
+  padding-bottom: $spacing-xxl;
+  display: flex; // Needed for centering content
+
+  .contentWrapper {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center; // Center the card horizontally
+    align-items: flex-start; // Align card to top
+    padding: $spacing-xl $spacing-lg; // Padding around card
+
+    @media (min-width: 768px) {
+        align-items: center; // Center vertically on larger screens
+        padding: $spacing-xxl $spacing-lg;
+    }
+  }
+
+  // Loader State
+  &__loader {
+     display: flex; justify-content: center; align-items: center;
+     flex-grow: 1; // Takes full space within wrapper
+  }
+   // Message States (Error/Empty)
+  &__message {
+    flex-grow: 1; display: flex; flex-direction: column; justify-content: center;
+    align-items: center; text-align: center; color: $text-secondary;
+    padding: $spacing-xxl $spacing-md;
+    svg { font-size: 3.5rem; margin-bottom: $spacing-md; opacity: 0.6; }
+    h3 { font-size: 1.4rem; color: $text-primary; margin-bottom: $spacing-sm; font-weight: 600; }
+    p { font-size: 1rem; line-height: 1.6; max-width: 450px; margin-bottom: $spacing-lg; }
+    button { // Simple button style for retry/add links
+         background-color: $primary-color; color: $text-light; border: none; padding: 0.6rem 1.5rem;
+         border-radius: $radius-md; cursor: pointer; font-weight: 500; transition: background-color $transition-fast; text-decoration: none;
+         &:hover { background-color: $primary-hover; }
+         &:focus-visible { outline: 2px solid $primary-color; outline-offset: 2px; }
+    }
+    &--error svg, &--error h3 { color: $error-color; }
+  }
+
+} // End .add-show-page
+
+
+// --- Add Show Card ---
+.add-show-card {
+  background-color: $background-light;
+  padding: $spacing-lg;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-lg;
+  width: 100%;
+  max-width: 550px; // Max width for the form card
+  border: 1px solid $border-color;
+
+  @media (min-width: 640px) {
+    padding: $spacing-xl $spacing-xxl;
+  }
+
+  &__title {
+    font-size: 1.6rem; font-weight: 700; color: $text-primary;
+    text-align: center; margin: 0 0 $spacing-xl 0;
+    span { color: $primary-color; } // Highlight 'Show'
+  }
+}
+
+
+// --- Add Show Form ---
+.add-show-form {
+  display: grid;
+  grid-template-columns: 1fr; // Default to 1 column
+  gap: $spacing-lg;
+
+  @media (min-width: 768px) {
+     grid-template-columns: repeat(2, 1fr); // 2 columns on larger screens
+     gap: $spacing-lg $spacing-xl; // Row, Column gap
+     // Allow button to span if needed, or place it outside grid
+  }
+}
+
+
+// --- Form Group Styling ---
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+
+  // Span full width if needed (for button or specific fields)
+  &--full {
+     @media (min-width: 768px) { grid-column: 1 / -1; }
+  }
+
+  label {
+    font-size: 0.875rem; font-weight: 500; color: $text-primary;
+    display: flex; align-items: center; gap: $spacing-sm;
+    svg { font-size: 1.2rem; color: $primary-color; }
+  }
+
+  // Style for input and select elements
+  input[type="date"],
+  input[type="time"],
+  select {
+    width: 100%; padding: 0.75rem $spacing-md;
+    border: 1px solid $border-color; border-radius: $radius-md;
+    background-color: $background-light; color: $text-primary;
+    font-size: 0.9rem; outline: none;
+    transition: border-color $transition-fast, box-shadow $transition-fast;
+    height: 44px; // Consistent height
+
+    &:focus { border-color: $primary-color; box-shadow: 0 0 0 3px rgba($primary-color, 0.15); }
+    &::placeholder { color: $text-secondary; opacity: 0.8; } // If using text inputs later
+
+    // Style disabled state if needed
+    // &:disabled { ... }
+  }
+
+   // Style for select dropdown arrow (basic override)
+   select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E"); // Basic dropdown arrow
+      background-position: right $spacing-md center;
+      background-repeat: no-repeat;
+      background-size: 1.2em 1.2em;
+      padding-right: $spacing-xl * 1.5; // Make space for arrow
+   }
+   // Style for date/time input icons (browser specific)
+    input[type="date"], input[type="time"] {
+       cursor: pointer;
+    }
+    // Hide default date/time icons in some browsers if needed (can be complex)
+    // input[type="date"]::-webkit-calendar-picker-indicator { ... }
+
+}
+
+
+// --- Add Prompt (If no movies/theatres) ---
+.add-prompt {
+    border: 1px dashed $border-color;
+    border-radius: $radius-md;
+    padding: $spacing-md;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-sm;
+    color: $text-secondary;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color $transition-fast, color $transition-fast;
+    text-align: center;
+
+    svg { font-size: 1.3rem; color: $primary-color; }
+    &:hover { border-color: $primary-color; color: $primary-color; }
+}
+
+
+// --- Submit Button ---
+.submit-button { // Reuse submit button style from edit profile / login
+  display: inline-flex; justify-content: center; align-items: center;
+  width: 100%; padding: 0.75rem $spacing-lg;
+  background-color: $primary-color; color: $text-light;
+  border: none; border-radius: $radius-md;
+  font-size: 1rem; font-weight: 600; cursor: pointer;
+  transition: background-color $transition-fast, opacity $transition-fast;
+  min-height: 44px;
+  grid-column: 1 / -1; // Ensure button spans full width in grid layout
+
+  &:hover:not(:disabled) { background-color: $primary-hover; }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+  &:focus-visible { outline: 2px solid $primary-color; outline-offset: 2px; }
+
+  // Loading state styles
+  &.loading { position: relative; color: transparent;
+    &::after { content: ""; position: absolute; width: 1.25rem; height: 1.25rem; top: 50%; left: 50%; margin-top: -0.625rem; margin-left: -0.625rem; border-radius: 50%; border: 2px solid rgba($text-light, 0.3); border-top-color: $text-light; animation: spin 0.8s linear infinite; } }
+}
+
+
+// --- Keyframes for Loader ---
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

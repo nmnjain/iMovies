@@ -1,0 +1,75 @@
+// src/components/loader/MovieCardSkeleton.scss
+
+// Define skeleton variables directly (or use global ones if available)
+$skeleton-bg: #e0e0e0; // Light gray for skeleton elements
+$skeleton-highlight: #f5f5f5; // Lighter gray for animation highlight
+$skeleton-card-bg: #ffffff; // Card background (should match movie card bg)
+$skeleton-radius-lg: 0.5rem; // Match movie card radius
+$skeleton-radius-sm: 0.25rem; // For text lines
+
+// Define keyframes for the shimmer animation
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.movie-card-skeleton {
+  background-color: $skeleton-card-bg;
+  border-radius: $skeleton-radius-lg;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); // Match card shadow
+  height: 100%; // Fill grid cell
+  display: flex;
+  flex-direction: column;
+
+  // Helper function for animated background
+  @mixin skeleton-animated-bg {
+    background-color: $skeleton-bg;
+    background-image: linear-gradient(to right, $skeleton-bg 0%, $skeleton-highlight 20%, $skeleton-bg 40%, $skeleton-bg 100%);
+    background-repeat: no-repeat;
+    background-size: 2000px 100%; // Large size for smooth animation
+    animation: skeleton-shimmer 1.5s linear infinite;
+    color: transparent; // Hide any accidental text
+  }
+
+  &__poster {
+    @include skeleton-animated-bg;
+    aspect-ratio: 2 / 3; // Match movie card poster ratio
+    width: 100%;
+    border-radius: $skeleton-radius-lg $skeleton-radius-lg 0 0; // Match card poster (top only)
+  }
+
+  &__info {
+    padding: 1rem; // Match movie card info padding
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  // Common style for skeleton text lines
+  &__title,
+  &__line {
+    @include skeleton-animated-bg;
+    border-radius: $skeleton-radius-sm; // Rounded corners for lines
+    margin-bottom: 0.75rem; // Spacing between lines
+    height: 1em; // Height based on font size
+  }
+
+  &__title {
+    height: 1.2em; // Slightly taller for title
+    margin-bottom: 1rem; // More space after title
+  }
+
+  &__line {
+      height: 0.8em; // Standard line height
+      margin-bottom: 0.5rem;
+    &--short {
+      width: 60%; // Make the last line shorter
+       margin-bottom: 0; // No margin after last line
+    }
+  }
+}

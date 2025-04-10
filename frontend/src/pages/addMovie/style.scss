@@ -1,0 +1,332 @@
+// ==========================================================================
+// Add/Edit Movie Page Styles (style.scss - Keep Filename)
+// ==========================================================================
+
+// --- Variables ---
+
+// --- Variables ---
+$primary-color: #4f46e5;
+$primary-hover: #4338ca;
+$secondary-color: #f43f5e;
+$text-light: #f8fafc;
+$background-body: var(--softBg, #f1f5f9);
+$background-light: var(--bg-light, #ffffff);
+$text-primary: var(--textColor, #1e293b);
+$text-secondary: var(--text-secondary, #64748b);
+$border-color: var(--border-color, #e2e8f0);
+$error-color: #ef4444;
+$success-color: #10b981;
+
+// Spacing
+$spacing-xs: 0.25rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+$spacing-xxl: 3rem;
+
+// Radii (Ensure all used radii are here)
+$radius-sm: 0.25rem;
+$radius-md: 0.375rem;
+$radius-lg: 0.5rem;
+$radius-xl: 1rem; // Added if needed elsewhere
+$radius-full: 9999px; // <-- ADD/CONFIRM THIS DEFINITION
+
+// Navbar Height
+$navbar-height: 64px;
+
+// Shadows
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+// Transitions
+$transition-fast: all 0.15s ease-in-out;
+$transition-normal: all 0.3s ease;
+// --- End Variables ---
+// --- End Variables ---
+
+
+// --- Base Page Style ---
+.add-movie-page {
+  background-color: $background-body;
+  color: $text-primary;
+  min-height: calc(100vh - #{$navbar-height});
+  padding-top: $navbar-height;
+  padding-bottom: $spacing-xxl;
+
+  .contentWrapper { // Style the ContentWrapper if used
+    width: 100%;
+    max-width: 1200px; // Allow wider content for admin page
+    margin: 0 auto;
+    padding: $spacing-xl $spacing-lg; // Add padding inside wrapper
+  }
+}
+
+// --- Content Layout ---
+.add-movie-content {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xxl; // Gap between form and movie list sections
+}
+
+
+// --- Form Section ---
+.add-movie-form-section {
+   background-color: $background-light;
+   padding: $spacing-lg;
+   border-radius: $radius-lg;
+   box-shadow: $shadow-md;
+   border: 1px solid $border-color;
+   position: relative; // For loader overlay
+
+   // Loader overlay when fetching edit data
+   &.loading-edit {
+      pointer-events: none; // Disable interaction while loading
+      .edit-loader { // Center the loader message
+         position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+         background-color: rgba($background-light, 0.8); backdrop-filter: blur(2px);
+         display: flex; justify-content: center; align-items: center;
+         z-index: 10; color: $primary-color; font-weight: 500; gap: $spacing-sm;
+         border-radius: $radius-lg; // Match parent radius
+      }
+   }
+}
+
+// --- Movie Form ---
+.movie-form {
+  display: flex;
+  flex-direction: column; // Mobile first layout
+  gap: $spacing-lg;
+
+  @media (min-width: 1024px) { // Two columns on larger screens
+    flex-direction: row;
+    gap: $spacing-xl;
+    align-items: flex-start; // Align columns to top
+  }
+
+  // Form title
+  &__title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: $text-primary;
+    margin-bottom: $spacing-sm;
+    grid-column: 1 / -1; // Span full width in potential future grid layout
+    text-align: center;
+
+    span { color: $primary-color; }
+
+    @media (min-width: 1024px) {
+        margin-bottom: $spacing-lg;
+        text-align: left; // Align left on desktop if two columns
+    }
+  }
+
+  // --- Image Upload Section ---
+  &__image-upload {
+    flex-shrink: 0;
+    width: 100%; // Full width on mobile
+    max-width: 250px; // Max width for upload area
+    margin: 0 auto; // Center on mobile
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-sm;
+
+    @media (min-width: 1024px) {
+      width: 300px; // Fixed width on desktop
+      max-width: none;
+      margin: 0;
+    }
+
+    .image-upload__label {
+       display: block;
+       width: 100%;
+       aspect-ratio: 2 / 3; // Maintain poster ratio
+       border: 2px dashed $border-color;
+       border-radius: $radius-md;
+       cursor: pointer;
+       transition: border-color $transition-fast, background-color $transition-fast;
+       position: relative; // For remove button
+       overflow: hidden; // Keep preview contained
+
+       &:hover {
+          border-color: $primary-color;
+          background-color: rgba($primary-color, 0.05);
+       }
+    }
+
+    .image-upload__preview {
+       width: 100%;
+       height: 100%;
+       position: relative;
+
+        img {
+          display: block; width: 100%; height: 100%; object-fit: cover;
+        }
+
+        .image-upload__remove-btn {
+            position: absolute;
+            top: $spacing-xs; right: $spacing-xs;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: $text-light;
+            border: none;
+            border-radius: $radius-full;
+            width: 28px; height: 28px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background-color $transition-fast;
+             z-index: 2;
+
+            &:hover { background-color: $error-color; }
+            &:disabled { display: none; }
+        }
+    }
+
+     .image-upload__placeholder {
+       width: 100%; height: 100%;
+       display: flex; flex-direction: column; justify-content: center; align-items: center;
+       color: $text-secondary;
+       text-align: center;
+       padding: $spacing-md;
+
+       svg { font-size: 3rem; margin-bottom: $spacing-sm; opacity: 0.7; }
+       span { font-size: 0.9rem; font-weight: 500; }
+
+       &.uploading {
+          color: $primary-color;
+           span { font-size: 0.8rem; }
+          // Style Loader component if needed
+       }
+    }
+
+    .image-upload__progress {
+       width: 100%; height: 6px; appearance: none; border: none;
+       border-radius: $radius-full; overflow: hidden; margin-top: $spacing-xs;
+        &::-webkit-progress-bar { background-color: $border-color; }
+        &::-webkit-progress-value { background-color: $primary-color; transition: width 0.3s ease;}
+        &::-moz-progress-bar { background-color: $primary-color; transition: width 0.3s ease; }
+    }
+
+  } // End image upload
+
+  // --- Form Fields Details Section ---
+  &__details {
+    flex-grow: 1; // Take remaining space
+    display: grid;
+    // Create columns for fields
+    grid-template-columns: 1fr; // 1 column mobile
+    gap: $spacing-md $spacing-lg; // Row gap, Column gap
+
+    @media (min-width: 640px) {
+        grid-template-columns: repeat(2, 1fr); // 2 columns tablet up
+    }
+  }
+
+  .form-group { // Style individual form group
+     display: flex;
+     flex-direction: column;
+     gap: $spacing-xs;
+
+     // Allow specific fields to span full width if needed
+     &--full {
+        @media (min-width: 640px) { grid-column: 1 / -1; } // Span both columns
+     }
+      // Responsive halving (used for date/runtime/cert)
+     &--half {
+         // Already takes full width on mobile due to parent grid
+     }
+     // Spacer for button alignment
+     &--spacer {
+         display: none; // Hide visually
+          @media (min-width: 640px) { display: block; } // Only show spacer on 2-col layout
+     }
+
+
+     label {
+        font-size: 0.875rem; font-weight: 500; color: $text-primary;
+        display: flex; align-items: center; gap: $spacing-sm; // Align icon with label
+        svg { font-size: 1.1rem; color: $primary-color; }
+     }
+
+     input[type="text"],
+     input[type="number"],
+     input[type="date"],
+     textarea {
+        width: 100%; padding: 0.7rem $spacing-md;
+        border: 1px solid $border-color; border-radius: $radius-md;
+        background-color: $background-light; color: $text-primary;
+        font-size: 0.9rem; outline: none;
+        transition: border-color $transition-fast, box-shadow $transition-fast;
+
+        &::placeholder { color: $text-secondary; opacity: 0.8; }
+        &:focus { border-color: $primary-color; box-shadow: 0 0 0 3px rgba($primary-color, 0.15); }
+        &:disabled { background-color: $background-body; cursor: not-allowed; opacity: 0.7; }
+     }
+
+     textarea {
+        resize: vertical; // Only allow vertical resize
+        min-height: 80px; // Min height for textarea
+        line-height: 1.5;
+     }
+      // Remove spinners from number input
+      input[type="number"] { -moz-appearance: textfield; }
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  }
+
+  // --- Form Actions (Buttons) ---
+  &__actions {
+     grid-column: 1 / -1; // Span full width
+     display: flex;
+     justify-content: flex-end; // Align buttons right
+     gap: $spacing-md;
+     margin-top: $spacing-sm;
+     padding-top: $spacing-lg;
+     border-top: 1px solid $border-color; // Separator above buttons
+  }
+
+  .form-button { // Common button style
+     display: inline-flex; align-items: center; justify-content: center;
+     padding: 0.6rem 1.5rem; border-radius: $radius-md;
+     font-size: 0.9rem; font-weight: 600; cursor: pointer;
+     border: none; transition: $transition-fast; white-space: nowrap;
+
+     &--submit { // Primary button style
+        background-color: $primary-color; color: $text-light;
+        &:hover:not(:disabled) { background-color: $primary-hover; }
+        // Loading state (copied from login submit button)
+         &.loading { position: relative; color: transparent;
+            &::after { content: ""; position: absolute; width: 1rem; height: 1rem; top: 50%; left: 50%; margin-top: -0.5rem; margin-left: -0.5rem; border-radius: 50%; border: 2px solid rgba($text-light, 0.3); border-top-color: $text-light; animation: spin 0.8s linear infinite; } }
+     }
+      &--cancel { // Secondary/Cancel button style
+         background-color: transparent; color: $text-secondary;
+         border: 1px solid $border-color;
+         &:hover:not(:disabled) { background-color: $background-body; color: $text-primary; border-color: $text-secondary;}
+      }
+       &:disabled { opacity: 0.6; cursor: not-allowed; }
+       &:focus-visible { outline: 2px solid $primary-color; outline-offset: 2px; }
+  }
+
+} // End .movie-form
+
+
+// --- Admin Movies List Section ---
+.admin-movies-list-section {
+  margin-top: $spacing-xxl; // Space above the list
+  padding-top: $spacing-xl;
+  border-top: 1px solid $border-color;
+}
+.admin-movies-list__title {
+  font-size: 1.4rem; font-weight: 600; color: $text-primary;
+  margin-bottom: $spacing-lg; text-align: center;
+   @media (min-width: 768px) { font-size: 1.6rem; }
+}
+// Add styles for AdminMovies component if needed, or assume it has its own
+
+
+// --- Animation Keyframes (if not global) ---
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

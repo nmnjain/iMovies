@@ -1,0 +1,203 @@
+// ==========================================================================
+// Movie Details Page Styles (style.scss - Keep Filename)
+// ==========================================================================
+
+// --- Variables ---
+// Define variables directly here (or use global ones).
+// *** ENSURE THIS ENTIRE BLOCK IS AT THE VERY TOP OF THE FILE ***
+$primary-color: #4f46e5;
+$primary-hover: #4338ca;
+$secondary-color: #f43f5e; // For favorite button active state maybe
+$text-light: #f8fafc;
+$background-body: var(--softBg, #f1f5f9);
+$background-light: var(--bg-light, #ffffff);
+$text-primary: var(--textColor, #1e293b);
+$text-secondary: var(--text-secondary, #64748b);
+$border-color: var(--border-color, #e2e8f0);
+$rating-color: #fbbf24; // Example rating color
+$error-color: #ef4444;  // Ensure error color is defined too
+
+// Spacing
+$spacing-xs: 0.25rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+$spacing-xxl: 3rem;
+
+// Radii
+$radius-sm: 0.25rem;
+$radius-md: 0.375rem;
+$radius-lg: 0.5rem;
+$radius-full: 9999px; // Ensure this is defined if used anywhere else
+
+// Navbar Height (Important for padding)
+$navbar-height: 64px;
+
+// Transitions
+$transition-fast: all 0.15s ease-in-out;
+$transition-normal: all 0.3s ease;
+
+// Shadows (Ensure these are defined!)
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05); // <-- DEFINITION HERE
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+// --- End Variables ---
+
+
+// --- Base Page Style ---
+.movie-details-page {
+  background-color: $background-body;
+  color: $text-primary;
+  min-height: calc(100vh - #{$navbar-height});
+  padding-top: $navbar-height;
+  display: flex;
+  flex-direction: column;
+
+  // --- Error State ---
+  &--error {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: $spacing-xxl $spacing-lg;
+    min-height: 60vh;
+    flex-grow: 1;
+
+    h2 { color: $error-color; margin-bottom: $spacing-md; } // Use $error-color
+    p { color: $text-secondary; margin-bottom: $spacing-lg; }
+    button {
+      background-color: $primary-color; color: $text-light; border: none;
+      padding: 0.6rem 1.5rem; border-radius: $radius-md; cursor: pointer;
+      font-weight: 500; transition: background-color $transition-fast;
+      &:hover { background-color: $primary-hover; }
+      &:focus-visible { outline: 2px solid $primary-color; outline-offset: 2px; }
+    }
+  }
+}
+
+// --- Optional Backdrop ---
+.details-backdrop { /* ... styles ... */ }
+
+// --- Main Content Section ---
+.details-content {
+  background-color: $background-light;
+  padding: $spacing-xl 0;
+  width: 100%;
+  box-shadow: $shadow-sm; // Line 95 - Uses $shadow-sm defined above
+  flex-grow: 1;
+
+  @media (min-width: 768px) {
+     padding: $spacing-xxl 0;
+  }
+
+  &__container {
+    max-width: 1000px; margin: 0 auto; padding: 0 $spacing-lg;
+    display: flex; flex-direction: column; gap: $spacing-lg;
+    @media (min-width: 768px) {
+      flex-direction: row; align-items: flex-start;
+      gap: $spacing-xl; padding: 0 $spacing-xl;
+    }
+  }
+
+  // --- Poster ---
+  &__poster {
+    width: 200px; max-width: 50%; aspect-ratio: 2 / 3;
+    border-radius: $radius-lg; overflow: hidden; box-shadow: $shadow-md;
+    margin: 0 auto; flex-shrink: 0;
+    img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    &-placeholder { /* ... styles ... */
+      width: 100%; height: 100%; display: flex; flex-direction: column;
+      justify-content: center; align-items: center; background-color: $border-color;
+      color: $text-secondary; svg { font-size: 4rem; margin-bottom: $spacing-sm; }
+      span { font-size: 0.9rem; font-weight: 500; }
+    }
+    @media (min-width: 768px) { width: 250px; max-width: none; margin: 0; }
+    @media (min-width: 1024px) { width: 300px; }
+  }
+
+  // --- Info Section ---
+  &__info {
+    flex-grow: 1; position: relative; padding-top: 2.5rem;
+    @media (min-width: 768px) { padding-top: 0; }
+  }
+
+  // --- Like/Favorite Button ---
+  &__like-button {
+    position: absolute; top: 0; right: 0;
+    background-color: rgba($background-body, 0.7); border: 1px solid $border-color;
+    backdrop-filter: blur(2px); width: 44px; height: 44px;
+    border-radius: $radius-full; display: flex; align-items: center; justify-content: center;
+    color: $text-secondary; font-size: 1.5rem; cursor: pointer; transition: $transition-normal; z-index: 5;
+    &:hover { background-color: rgba($background-body, 0.9); color: $primary-color; transform: scale(1.1); }
+    &.liked { color: $secondary-color; &:hover { color: darken($secondary-color, 10%); background-color: rgba($secondary-color, 0.15); } }
+    @media (min-width: 768px) { top: 0; right: 0; }
+  }
+
+  // --- Title ---
+  &__title {
+    font-size: 1.8rem; font-weight: 700; line-height: 1.3; margin: 0 0 $spacing-sm 0;
+    @media (min-width: 768px) { font-size: 2.2rem; }
+    @media (min-width: 1024px) { font-size: 2.5rem; }
+  }
+
+  // --- Genres ---
+  &__genres {
+    display: flex; flex-wrap: wrap; gap: $spacing-sm; margin-bottom: $spacing-lg;
+    .genre-tag {
+      background-color: rgba($primary-color, 0.1); color: $primary-color;
+      padding: $spacing-xs $spacing-md; border-radius: $radius-full;
+      font-size: 0.75rem; font-weight: 500; white-space: nowrap;
+    }
+  }
+
+  // --- Generic Section Styling (Overview) ---
+  &__section { margin-bottom: $spacing-lg; }
+  &__section-title {
+     font-size: 1.2rem; font-weight: 600; margin-bottom: $spacing-sm;
+     padding-bottom: $spacing-xs; border-bottom: 2px solid $border-color; display: inline-block;
+  }
+  &__description {
+     font-size: 0.9rem; line-height: 1.7; color: $text-secondary;
+     @media (min-width: 768px) { font-size: 1rem; }
+  }
+
+  // --- Meta Info (Date, Runtime) ---
+  &__meta {
+     display: flex; flex-wrap: wrap; gap: $spacing-lg $spacing-xl; margin-bottom: $spacing-xl;
+     padding-top: $spacing-sm; border-top: 1px solid $border-color;
+     .meta-item {
+        display: flex; align-items: center; gap: $spacing-sm; font-size: 0.9rem; color: $text-primary;
+        svg { font-size: 1.2rem; color: $primary-color; flex-shrink: 0; }
+        &__label { font-weight: 500; color: $text-secondary; }
+     }
+  }
+
+  // --- Action Buttons ---
+  &__actions { margin-top: auto; padding-top: $spacing-md; }
+  .book-tickets-button {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 0.8rem 2rem; background-color: $primary-color; color: $text-light;
+    border: none; border-radius: $radius-md; font-size: 1rem; font-weight: 600;
+    text-decoration: none; cursor: pointer; transition: $transition-normal;
+    &:hover { background-color: $primary-hover; transform: translateY(-2px); box-shadow: $shadow-md; }
+    &:focus-visible { outline: 2px solid $primary-color; outline-offset: 2px; border-radius: $radius-md; }
+  }
+
+} // End .details-content
+
+
+// --- Reviews Section ---
+.details-reviews {
+  background-color: $background-body; padding: $spacing-xl 0 $spacing-xxl 0; flex-grow: 1;
+  &__container {
+      max-width: 1000px; margin: 0 auto; padding: 0 $spacing-lg;
+      @media (min-width: 768px) { padding: 0 $spacing-xl; }
+  }
+  &__title {
+     font-size: 1.5rem; font-weight: 600; margin-bottom: $spacing-lg;
+     padding-bottom: $spacing-sm; border-bottom: 2px solid $border-color;
+     @media (min-width: 768px) { font-size: 1.7rem; }
+  }
+}

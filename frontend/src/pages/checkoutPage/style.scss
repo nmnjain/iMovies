@@ -1,0 +1,292 @@
+// ==========================================================================
+// Checkout Page Styles (style.scss - Keep Filename)
+// ==========================================================================
+
+// --- Variables ---
+$primary-color: #4f46e5;
+$primary-hover: #4338ca;
+$success-color: #10b981; // Green for success indication
+$success-light: rgba($success-color, 0.1);
+$error-color: #ef4444; // <-- ADD THIS DEFINITION (Red 500)
+$text-light: #f8fafc;
+$background-body: var(--softBg, #f1f5f9);
+$background-light: var(--bg-light, #ffffff);
+$text-primary: var(--textColor, #1e293b);
+$text-secondary: var(--text-secondary, #64748b);
+$border-color: var(--border-color, #e2e8f0);
+
+// Spacing
+$spacing-xs: 0.25rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+$spacing-xxl: 3rem;
+
+// Radii
+$radius-sm: 0.25rem;
+$radius-md: 0.375rem;
+$radius-lg: 0.5rem;
+$radius-xl: 1rem; // Larger radius for ticket card
+$radius-full: 9999px;
+
+// Shadows
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+// Transitions
+$transition-fast: all 0.15s ease-in-out;
+$transition-normal: all 0.3s ease;
+// --- End Variables ---
+
+
+// --- Base Page Style ---
+.checkout-page {
+  background-color: $background-body;
+  color: $text-primary;
+  display: flex; // Use flex to center content vertically and horizontally
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; // Full viewport height
+  padding: $spacing-lg; // Padding around content
+
+  // Style the wrapper if needed, ContentWrapper might handle this
+  .contentWrapper {
+    width: 100%;
+    max-width: 600px; // Max width for confirmation/ticket
+    display: flex; // Ensure wrapper uses flex for centering its child
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+
+// --- Confirmation Message ---
+.checkout-confirmation {
+  background-color: $background-light;
+  border-radius: $radius-lg;
+  padding: $spacing-xl $spacing-lg;
+  box-shadow: $shadow-md;
+  border: 1px solid $border-color;
+  text-align: center;
+  width: 100%;
+  max-width: 450px; // Limit width of confirmation box
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-md; // Gap between elements
+
+  .confirmation-icon-wrapper {
+      background-color: $success-light; // Light green background circle
+      border-radius: $radius-full;
+      padding: $spacing-sm; // Padding around inner circle
+      margin-bottom: $spacing-sm;
+  }
+
+  .confirmation-icon {
+    background-color: $success-color; // Solid green circle
+    color: $text-light; // White icon
+    width: 60px;
+    height: 60px;
+    border-radius: $radius-full;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg {
+      font-size: 2.5rem; // Large checkmark icon
+    }
+  }
+
+  .confirmation-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: $text-primary;
+    margin: 0;
+  }
+
+  .confirmation-subtitle {
+    font-size: 1rem;
+    color: $text-secondary;
+    margin: 0 0 $spacing-sm 0;
+  }
+
+  .confirmation-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-sm;
+    padding: 0.7rem 1.5rem;
+    background-color: $primary-color;
+    color: $text-light;
+    border: none;
+    border-radius: $radius-md;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: $transition-fast;
+     text-decoration: none; // If using Link component
+
+     svg { font-size: 1.2rem; }
+
+    &:hover {
+      background-color: $primary-hover;
+      transform: translateY(-2px);
+    }
+    &:focus-visible {
+        outline: 2px solid $primary-color;
+        outline-offset: 2px;
+    }
+  }
+} // End .checkout-confirmation
+
+
+// --- Ticket Details Card ---
+.ticket-details {
+  background-color: $background-light;
+  border-radius: $radius-xl; // Slightly larger radius for ticket
+  box-shadow: $shadow-lg; // More prominent shadow
+  border: 1px solid $border-color;
+  width: 100%;
+  max-width: 550px; // Max width for ticket
+  overflow: hidden; // Ensure nothing spills out
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: $spacing-sm $spacing-md;
+      background-color: rgba($primary-color, 0.08); // Subtle header background tint
+      border-bottom: 1px solid $border-color;
+  }
+
+  &__main-title {
+     font-size: 1.1rem;
+     font-weight: 600;
+     color: $primary-color;
+     margin: 0;
+  }
+
+  &__close-button {
+      background: none;
+      border: none;
+      color: $text-secondary;
+      font-size: 1.5rem; // Close icon size
+      padding: $spacing-xs;
+      margin: -$spacing-xs; // Align visual edge
+      border-radius: $radius-full;
+      cursor: pointer;
+      transition: color $transition-fast, background-color $transition-fast;
+
+      &:hover, &:focus-visible {
+        color: $error-color; // Red on hover/focus
+        background-color: rgba($error-color, 0.1);
+      }
+      &:focus-visible {
+          outline: none; // Handled by background change
+      }
+  }
+
+  &__content {
+      display: flex;
+      flex-direction: column; // Stack poster/info on mobile
+      padding: $spacing-lg;
+      gap: $spacing-lg;
+
+       @media (min-width: 500px) { // Side-by-side when space allows
+           flex-direction: row;
+           align-items: flex-start;
+       }
+  }
+
+  &__poster {
+      flex-shrink: 0;
+      width: 130px; // Smaller poster inside ticket
+      aspect-ratio: 2 / 3;
+      border-radius: $radius-md;
+      overflow: hidden;
+      margin: 0 auto $spacing-sm auto; // Center on mobile, add bottom margin
+
+      img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+      @media (min-width: 500px) {
+           width: 150px; // Slightly larger side poster
+           margin: 0; // Reset margin
+      }
+  }
+
+  &__info {
+     flex-grow: 1;
+     display: flex;
+     flex-direction: column;
+     gap: $spacing-sm; // Default gap between info items
+  }
+
+  &__movie-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: $text-primary;
+      margin: 0 0 $spacing-xs 0;
+      line-height: 1.2;
+  }
+
+  &__theatre {
+     font-size: 1rem;
+     font-weight: 500;
+     color: $text-secondary;
+     margin: 0 0 $spacing-xs 0;
+  }
+
+  &__showtime {
+     font-size: 0.9rem;
+     color: $text-secondary;
+     border-bottom: 1px dashed $border-color; // Separator
+     padding-bottom: $spacing-sm;
+     margin-bottom: $spacing-sm;
+     p { margin: 0; line-height: 1.4; }
+  }
+
+  &__seats {
+      .seats__title {
+         font-size: 0.9rem;
+         font-weight: 600;
+         color: $text-primary;
+         margin-bottom: $spacing-xs;
+      }
+      .seats__row {
+         font-size: 0.85rem;
+         color: $text-secondary;
+         margin: 0 0 $spacing-xs $spacing-sm; // Indent slightly
+         line-height: 1.4;
+         span { font-weight: 500; color: $text-primary; margin-right: $spacing-xs;} // Style section name
+      }
+  }
+
+  &__price {
+      margin-top: auto; // Push price towards bottom
+      padding-top: $spacing-sm;
+      border-top: 1px dashed $border-color;
+      font-size: 1rem;
+      font-weight: 500;
+      color: $text-secondary;
+      text-align: right;
+
+      span { // Price value
+         font-weight: 700;
+         font-size: 1.1rem;
+         color: $primary-color; // Highlight price
+      }
+  }
+
+// Optional Footer Button (if needed, button moved to header)
+//   &__footer {
+//       border-top: 1px solid $border-color;
+//       padding: $spacing-md $spacing-lg;
+//       text-align: center;
+//   }
+//   &__footer-button { /* ... style similar to confirmation button ... */ }
+
+} // End .ticket-details

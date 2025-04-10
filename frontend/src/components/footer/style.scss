@@ -1,0 +1,191 @@
+// ==========================================================================
+// Footer Styles (style.scss - Keep Filename)
+// ==========================================================================
+
+// --- Variables ---
+// Define variables directly here (or use global ones).
+// Ensure these match your overall theme variables.
+$primary-color: #4f46e5; // Indigo primary color
+$primary-hover: #4338ca;
+$text-light: #f8fafc; // Light text
+// Inside the Variables section at the top of style.scss
+$border-color: var(--border-color, #e2e8f0);   // Fallback to light border
+$text-secondary: var(--text-secondary, #64748b); // Fallback to gray text
+
+// Referencing CSS variables set by your ThemeContext
+$background-footer: var(--bg, #1e293b); // Use a darker background for footer (e.g., Slate 800) or keep var(--bg)
+$background-footer-soft: var(--softBg, #334155); // Softer background for icons (e.g., Slate 700)
+$text-footer-primary: var(--textColor-footer, #e2e8f0); // Lighter text for dark background (e.g., Slate 200)
+$text-footer-secondary: var(--text-secondary-footer, #94a3b8); // Muted text (e.g., Slate 400)
+$border-footer-color: var(--border-footer-color, #334155); // Border color within footer
+
+// Spacing
+$spacing-xs: 0.25rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+$spacing-xxl: 3rem;
+
+// Radii
+$radius-md: 0.375rem;
+$radius-full: 9999px;
+
+// Transitions
+$transition-fast: all 0.15s ease-in-out;
+$transition-normal: all 0.3s ease;
+// --- End Variables ---
+
+
+// --- Base Footer Style ---
+.footer {
+  background-color: $background-footer; // Use dark footer background
+  color: $text-footer-primary; // Use light primary text for footer
+  padding: $spacing-xxl 0 $spacing-xl 0; // Generous top padding, standard bottom
+  position: relative; // Keep position relative if needed for absolute elements later
+  width: 100%; // Ensure full width
+
+  // --- Container ---
+  &__container {
+    width: 100%;
+    max-width: 1000px; // Slightly narrower max-width for footer content
+    margin: 0 auto;
+    padding: 0 $spacing-lg; // Horizontal padding
+    display: flex;
+    flex-direction: column;
+    align-items: center; // Center-align all content blocks
+    text-align: center; // Center-align text by default
+  }
+
+  // --- Optional Brand ---
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-lg; // Space below brand if added
+  }
+  &__brand-icon {
+    font-size: 1.8rem;
+    color: $primary-color;
+  }
+  &__brand-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $text-footer-primary;
+    span {
+      color: $primary-color;
+    }
+  }
+
+  // --- Navigation Menu ---
+  &__nav {
+    margin-bottom: $spacing-lg; // Space below nav links
+  }
+
+  &__menu-items {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0; // Reset default margin
+    display: flex;
+    flex-wrap: wrap; // Allow items to wrap on smaller screens
+    justify-content: center;
+    gap: $spacing-md $spacing-lg; // Row gap, Column gap
+  }
+
+  &__menu-link {
+    color: $text-footer-secondary; // Use muted text color for links
+    text-decoration: none;
+    font-size: 0.875rem; // Standard small link size
+    font-weight: 500;
+    transition: color $transition-fast;
+
+    &:hover, &:focus-visible {
+      color: $primary-color; // Highlight with primary color on hover/focus
+      text-decoration: underline; // Add underline on hover/focus
+    }
+    &:focus-visible { // Simple focus outline
+       outline: 1px dashed $primary-color;
+       outline-offset: 2px;
+       border-radius: 2px;
+    }
+  }
+
+  // --- Info Text ---
+  &__info-text {
+    font-size: 0.875rem; // Standard body small size
+    line-height: 1.6;
+    color: $text-footer-secondary; // Muted text color
+    max-width: 650px; // Limit width for readability
+    margin-bottom: $spacing-xl; // Space below info text
+  }
+
+  // --- Social Icons ---
+  &__social-icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-md; // Space between icons
+    margin-bottom: $spacing-xl; // Space below social icons
+  }
+
+  &__social-link {
+    display: inline-flex; // Use inline-flex for alignment
+    align-items: center;
+    justify-content: center;
+    width: 40px; // Fixed size for icon container
+    height: 40px;
+    border-radius: $radius-full; // Circular shape
+
+    // --- ADJUSTED DEFAULT STYLES ---
+    // Make default style more visible on light backgrounds
+    background-color: transparent; // Use transparent background by default
+    border: 1px solid $border-color; // Use the main border color (adapts to theme)
+    color: $text-secondary; // Use secondary text color (adapts to theme)
+    // --- END ADJUSTED DEFAULT STYLES ---
+
+    font-size: 1.1rem; // Slightly smaller icon size if needed
+    text-decoration: none; // Remove underline from link
+    transition: background-color $transition-fast, color $transition-fast, transform $transition-fast, border-color $transition-fast;
+
+    &:hover, &:focus-visible {
+      // Keep the strong hover/focus state
+      background-color: $primary-color; // Use primary color background on hover/focus
+      border-color: $primary-color; // Match border color on hover
+      color: $text-light; // Use light text/icon color on hover/focus
+      transform: translateY(-3px); // Slight lift effect
+    }
+     &:focus-visible { // Simple focus outline
+       outline: 2px solid $primary-color;
+       outline-offset: 2px;
+    }
+  }
+
+  // --- Copyright ---
+  &__copyright {
+    font-size: 0.75rem; // Smallest text size
+    color: $text-footer-secondary; // Muted text color
+    margin-top: $spacing-lg; // Space above copyright
+    padding-top: $spacing-lg; // Add padding above
+    width: 100%; // Take full width
+    border-top: 1px solid $border-footer-color; // Separator line
+  }
+
+} // End .footer
+
+// --- Mixin for Responsive Design ---
+// Define here if not imported globally
+@mixin md {
+  @media (min-width: 768px) { @content; }
+}
+
+// Apply responsive adjustments if needed (example)
+// @include md {
+//   .footer {
+//     &__container {
+//        // Adjust layout on larger screens if needed, e.g., side-by-side elements
+//     }
+//     &__menu-link {
+//        font-size: 0.9rem; // Slightly larger links on desktop
+//     }
+//   }
+// }
